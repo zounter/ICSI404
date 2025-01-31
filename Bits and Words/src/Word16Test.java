@@ -25,14 +25,19 @@ class Word16Test {
 
     @Test
     void getBitN() {
+
         var w = getStripe();
         for (int i=0;i<16;i++) {
             Bit result = new Bit(true);
             w.getBitN(i,result);
             if (i%2==1)
-                assertEquals(result.getValue(),f.getValue());
+            {
+                assertEquals(result.getValue(), f.getValue());
+            }
             else
-                assertEquals(result.getValue(),t.getValue());
+            {
+                assertEquals(result.getValue(), t.getValue());
+            }
         }
     }
 

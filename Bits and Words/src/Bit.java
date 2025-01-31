@@ -1,6 +1,6 @@
 public class Bit {
     public enum boolValues { FALSE, TRUE }
-    boolValues BitValue;
+    private boolValues BitValue;
 
     public Bit(boolean value) {
         if(value)
@@ -15,6 +15,7 @@ public class Bit {
 
     public boolValues getValue()
     {
+        System.out.println(this.BitValue.toString());
         return this.BitValue;
     }
 

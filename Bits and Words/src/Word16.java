@@ -1,27 +1,39 @@
+import java.util.Arrays;
+
 public class Word16 {
     public Word16() {
     }
 
-    Bit[] BitArray;
+    private Bit[] BitArray;
 
     public Word16(Bit[] in)
     {
-        BitArray = in;
+        this.BitArray = in;
+
+
     }
 
     public void copy(Word16 result)
     {
         // sets the values in "result" to be the same as the values in this instance; use "bit.assign"
+        int counter = 0;
+        for(Bit currentBit : this.BitArray)
+        {
+            result.setBitN(counter, currentBit);
+            counter++;
+        }
     }
 
     public void setBitN(int n, Bit source)
     {
         // sets the nth bit of this word to "source"
+        this.BitArray[n] = source;
     }
 
     public void getBitN(int n, Bit result)
     {
         // sets result to be the same value as the nth bit of this word
+        result.assign(this.BitArray[n].getValue());
     }
 
     public boolean equals(Word16 other)

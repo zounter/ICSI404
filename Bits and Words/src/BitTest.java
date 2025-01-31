@@ -21,16 +21,12 @@ class BitTest {
     void testAnd() {
         Bit result = new Bit(true);
         t1.and(t2,result);
-        System.out.println("t: " + t1.BitValue + " f: " + t2.BitValue + " r: " + result.BitValue);
         Assertions.assertEquals(Bit.boolValues.TRUE,result.getValue());
         f1.and(t2,result);
-        System.out.println("f: " + f1.BitValue + " t: " + t2.BitValue + " r: " + result.BitValue);
         Assertions.assertEquals(Bit.boolValues.FALSE,result.getValue());
         t1.and(f2,result);
-        System.out.println("t: " + f1.BitValue + " f: " + t2.BitValue + " r: " + result.BitValue);
         Assertions.assertEquals(Bit.boolValues.FALSE,result.getValue());
         f1.and(f2,result);
-        System.out.println("f:" + f1.BitValue + " f:" + t2.BitValue + " r: " + result.BitValue);
         Assertions.assertEquals(Bit.boolValues.FALSE,result.getValue());
         stillOK();
     }
