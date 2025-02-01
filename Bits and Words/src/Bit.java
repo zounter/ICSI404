@@ -15,7 +15,6 @@ public class Bit {
 
     public boolValues getValue()
     {
-        System.out.println(this.BitValue.toString());
         return this.BitValue;
     }
 
@@ -26,18 +25,7 @@ public class Bit {
 
     public void and(Bit b2, Bit result)
     {
-        if (this.getValue() == boolValues.FALSE)
-        {
-            result.assign(boolValues.FALSE);
-        }
-        else if (b2.getValue() == boolValues.FALSE)
-        {
-            result.assign(boolValues.FALSE);
-        }
-        else
-        {
-            result.assign(boolValues.TRUE);
-        }
+            and(this, b2, result);
     }
 
     public static void and(Bit b1, Bit b2, Bit result)
@@ -59,18 +47,7 @@ public class Bit {
 
     public void or(Bit b2, Bit result)
     {
-        if (this.getValue() == boolValues.TRUE)
-        {
-            result.assign(boolValues.TRUE);
-        }
-        else if (b2.getValue() == boolValues.TRUE)
-        {
-            result.assign(boolValues.TRUE);
-        }
-        else
-        {
-            result.assign(boolValues.FALSE);
-        }
+      or(this, b2, result);
     }
 
     public static void or(Bit b1, Bit b2, Bit result)
@@ -91,13 +68,7 @@ public class Bit {
 
     public void xor(Bit b2, Bit result)
     {
-        or(b2, result);
-        if(result.getValue() == boolValues.FALSE)
-        {
-            return;
-        }
-        and(b2, result);
-        result.not(result);
+        xor(this, b2, result);
     }
 
     public static void xor(Bit b1, Bit b2, Bit result)
@@ -105,7 +76,7 @@ public class Bit {
         or(b1, b2, result);
         if(result.getValue() == boolValues.FALSE)
         {
-         return;
+            return;
         }
         and(b1, b2, result);
         result.not(result);
@@ -125,14 +96,7 @@ public class Bit {
 
     public void not(Bit result)
     {
-        if(this.BitValue == boolValues.TRUE)
-        {
-            result.assign(boolValues.FALSE);
-        }
-        else
-        {
-            result.assign(boolValues.TRUE);
-        }
+      not(this, result);
     }
 
     public String toString() {
