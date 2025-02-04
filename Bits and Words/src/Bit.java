@@ -2,6 +2,12 @@ public class Bit {
     public enum boolValues { FALSE, TRUE }
     private boolValues BitValue;
 
+    public Bit()
+    {
+        //if no value is given it is automatically set to false
+        this.BitValue = boolValues.FALSE;
+    }
+
     public Bit(boolean value) {
         if(value)
         {
@@ -106,10 +112,4 @@ public class Bit {
         }
         return "f";
     }
-
-
-
-
-
-
 }

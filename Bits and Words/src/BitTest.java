@@ -71,8 +71,8 @@ class BitTest {
 
     @org.junit.jupiter.api.Test
     void testToString() {
-        Bit result = new Bit(true);
-        Assertions.assertEquals("t",result.toString());
+        Bit t = new Bit(true);
+        Assertions.assertEquals("t",t.toString());
         Bit f = new Bit(false);
         Assertions.assertEquals("f",f.toString());
     }

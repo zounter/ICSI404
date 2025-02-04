@@ -3,9 +3,10 @@ import java.util.Arrays;
 public class Word16 {
     public Word16()
     {
+        //fills blank BitArray with false Bits if no input is given
         for(int counter = 0; counter < 16; counter++)
         {
-            this.BitArray[counter] = new Bit(false);
+            this.BitArray[counter] = new Bit();
         }
     }
 
@@ -42,18 +43,18 @@ public class Word16 {
 
     public boolean equals(Word16 other)
     {
-        // is other equal to this
-        int counter = 0;
-        for (counter = 0; counter < 16; counter++)
-        {
-            if (this.BitArray[counter].getValue() != other.BitArray[counter].getValue()) return false;
-        }
-        return true;
+        return this.equals(this, other);
     }
 
     public static boolean equals(Word16 a, Word16 b)
     {
-        return false;
+        int counter = 0;
+        while (counter < a.BitArray.length)
+        {
+            if(a.BitArray[counter].getValue() != b.BitArray[counter].getValue()) return false;
+            counter++;
+        }
+        return true;
     }
 
     public void and(Word16 other, Word16 result)
