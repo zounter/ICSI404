@@ -166,6 +166,5 @@ class Word32Test {
         stripe2.copy(copyStripe2);
         assertTrue(copyStripe.equals(getStripe()));
         assertTrue(copyStripe2.equals(getStripe2()));
-
     }
 }

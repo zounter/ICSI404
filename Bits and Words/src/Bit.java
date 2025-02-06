@@ -9,14 +9,9 @@ public class Bit {
     }
 
     public Bit(boolean value) {
-        if(value)
-        {
-            this.BitValue = boolValues.TRUE;
-        }
-        else
-        {
-            this.BitValue = boolValues.FALSE;
-        }
+        //setting bit's boolValue
+        if(value) this.BitValue = boolValues.TRUE;
+        else this.BitValue = boolValues.FALSE;
     }
 
     public boolValues getValue()
@@ -36,19 +31,10 @@ public class Bit {
 
     public static void and(Bit b1, Bit b2, Bit result)
     {
-
-        if (b1.getValue() == boolValues.FALSE)
-        {
-            result.assign(boolValues.FALSE);
-        }
-        else if (b2.getValue() == boolValues.FALSE)
-        {
-            result.assign(boolValues.FALSE);
-        }
-        else
-        {
-            result.assign(boolValues.TRUE);
-        }
+        //will only set result to true if both enums fail their is false checks
+        if (b1.getValue() == boolValues.FALSE) result.assign(boolValues.FALSE);
+        else if (b2.getValue() == boolValues.FALSE) result.assign(boolValues.FALSE);
+        else result.assign(boolValues.TRUE);
     }
 
     public void or(Bit b2, Bit result)
@@ -58,18 +44,10 @@ public class Bit {
 
     public static void or(Bit b1, Bit b2, Bit result)
     {
-        if (b1.getValue() == boolValues.TRUE)
-        {
-            result.assign(boolValues.TRUE);
-        }
-        else if (b2.getValue() == boolValues.TRUE)
-        {
-            result.assign(boolValues.TRUE);
-        }
-        else
-        {
-            result.assign(boolValues.FALSE);
-        }
+        //will only set result to false if both enums fail their is true checks
+        if (b1.getValue() == boolValues.TRUE) result.assign(boolValues.TRUE);
+        else if (b2.getValue() == boolValues.TRUE) result.assign(boolValues.TRUE);
+        else result.assign(boolValues.FALSE);
     }
 
     public void xor(Bit b2, Bit result)
@@ -79,25 +57,16 @@ public class Bit {
 
     public static void xor(Bit b1, Bit b2, Bit result)
     {
-        or(b1, b2, result);
-        if(result.getValue() == boolValues.FALSE)
-        {
-            return;
-        }
-        and(b1, b2, result);
-        result.not(result);
+        //will only set result to false if b1 and b2 are different values
+        if(b1.getValue() != b2.getValue()) result.assign(boolValues.TRUE);
+        else result.assign(boolValues.FALSE);
     }
 
     public static void not(Bit b2, Bit result)
     {
-        if(b2.BitValue == boolValues.TRUE)
-        {
-            result.assign(boolValues.FALSE);
-        }
-        else
-        {
-            result.assign(boolValues.TRUE);
-        }
+        // uses if/else statement to swap result Bit's boolValue
+        if(b2.BitValue == boolValues.TRUE)  result.assign(boolValues.FALSE);
+        else result.assign(boolValues.TRUE);
     }
 
     public void not(Bit result)
@@ -106,10 +75,8 @@ public class Bit {
     }
 
     public String toString() {
-        if(this.BitValue == boolValues.TRUE)
-        {
-            return "t";
-        }
+        // prints either a t or an f depending on the Bit's boolValue
+        if(this.BitValue == boolValues.TRUE) return "t";
         return "f";
     }
 }

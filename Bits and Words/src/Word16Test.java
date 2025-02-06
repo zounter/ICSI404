@@ -114,4 +114,16 @@ class Word16Test {
         sw2.not(result);
         assertTrue(sw.equals(result));
     }
+
+    @Test
+    void copy() {
+        var stripe = getStripe();
+        var stripe2 = getStripe2();
+        var copyStripe = new Word16();
+        var copyStripe2 = new Word16();
+        stripe.copy(copyStripe);
+        stripe2.copy(copyStripe2);
+        assertTrue(copyStripe.equals(getStripe()));
+        assertTrue(copyStripe2.equals(getStripe2()));
+    }
 }
