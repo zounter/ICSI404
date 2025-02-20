@@ -20,7 +20,6 @@ public class Word32 {
         // sets result = bits 0-15 of this word. use bit.assign
         for (int counter = 0; counter < 16; counter++)
         {
-            //setBitN uses bit.assign in its defenition so this is technically correct
             result.setBitN(counter, BitArray32[counter]);
         }
     }
@@ -40,7 +39,7 @@ public class Word32 {
         int counter = 0;
         for (Bit currentBit : this.BitArray32)
         {
-            result.BitArray32[counter].assign(currentBit.getValue());
+            result.BitArray32[counter] = currentBit;
             counter++;
         }
     }
@@ -52,7 +51,6 @@ public class Word32 {
 
     public static boolean equals(Word32 a, Word32 b)
     {
-        // iterates over every value in both Bit arrays returning true if all corrosponding bits have the same value
         int counter = 0;
         while (counter < a.BitArray32.length)
         {
@@ -80,7 +78,6 @@ public class Word32 {
 
     public static void and(Word32 a, Word32 b, Word32 result)
     {
-        // uses and comparison for each index of a and b to form a new Array
         for (int counter = 0; counter < a.BitArray32.length; counter++)
         {
             Bit.and(a.BitArray32[counter], b.BitArray32[counter], result.BitArray32[counter]);
@@ -94,7 +91,6 @@ public class Word32 {
 
     public static void or(Word32 a, Word32 b, Word32 result)
     {
-        //uses or comparison for each index of a and b to form a new Array
         for (int counter = 0; counter < a.BitArray32.length; counter++)
         {
             Bit.or(a.BitArray32[counter], b.BitArray32[counter], result.BitArray32[counter]);
@@ -108,7 +104,6 @@ public class Word32 {
 
     public static void xor(Word32 a, Word32 b, Word32 result)
     {
-        //uses xor comparison for each index of a and b to form a new Array
         for (int counter = 0; counter < a.BitArray32.length; counter++)
         {
             Bit.xor(a.BitArray32[counter], b.BitArray32[counter], result.BitArray32[counter]);
@@ -122,7 +117,6 @@ public class Word32 {
 
     public static void not(Word32 a, Word32 result)
     {
-        // nots each index of word a creating a new Array
         for (int counter = 0; counter < a.BitArray32.length; counter++)
         {
             Bit.not(a.BitArray32[counter], result.BitArray32[counter]);
@@ -131,14 +125,12 @@ public class Word32 {
     }
 
     public String toString() {
-        //creates a string using t and f to represent each bit in the Array using the format specified
         StringBuilder sb = new StringBuilder();
-        for (Bit currentBit : this.BitArray32)
+        for(Bit currentBit : this.BitArray32)
         {
             sb.append(currentBit.toString());
             sb.append(",");
         }
-
         return sb.toString();
     }
 
