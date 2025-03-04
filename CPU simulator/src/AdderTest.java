@@ -1,13 +1,14 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+
 class AdderTest {
 
-    Bit t= new Bit(true);
-    Bit f= new Bit(false);
+    Bit t = new Bit(true);
+    Bit f = new Bit(false);
 
     private final int[] numbers = new int[]{
-            10,300,0,-44,
+            10, 300, 0, -44,
             -1423594213, 1568954312, -845293742, 993467552, -1002356876, 650487392, -1679321994, 1225674195, -1483948319, 1778226502,
             -1215732624, 1684326107, -2000000000, 985376580, -368293261, 1435982683, -1349867242, 1659783211, -987434539, 1984926593,
             -1249689381, 567834206, -915738246, 1253118047, -1726490681, 287156821, -234987501, 1004167338, -1022349024, 1432598096,
@@ -19,28 +20,29 @@ class AdderTest {
             -1716182635, 679432467, -1129071994, 1817369502, -1276455863, 1120518271, -1465328086, 1341798471, -1052921199, 813790007,
             -898602115, 1723867113, -1659012482, 929672746, -1064738039, 1413785072, -635308568, 1657128944, -1786543917, 741276693
     };
+
     @Test
     void testTestConverter() {
         var value = new Word32();
-        Assertions.assertEquals(0,TestConverter.toInt(value));
+        Assertions.assertEquals(0, TestConverter.toInt(value));
         value = new Word32(new Bit[]{
-               f,f,f,f, f,f,f,f,      f,f,f,f, f,f,f,f,
-                f,f,f,f, f,f,f,f,      f,f,t,f, t,f,t,f
+                f, f, f, f, f, f, f, f, f, f, f, f, f, f, f, f,
+                f, f, f, f, f, f, f, f, f, f, t, f, t, f, t, f
         });
-        Assertions.assertEquals(42,TestConverter.toInt(value));
+        Assertions.assertEquals(42, TestConverter.toInt(value));
 
         value = new Word32(new Bit[]{
-                t,t,t,t, t,t,t,t,      t,t,t,t, t,t,t,t,
-                t,t,t,t, t,t,t,t,     t,t,t,f, t,f,f,t
+                t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t,
+                t, t, t, t, t, t, t, t, t, t, t, f, t, f, f, t
         });
-        Assertions.assertEquals(-23,TestConverter.toInt(value));
+        Assertions.assertEquals(-23, TestConverter.toInt(value));
     }
 
     @Test
     void testTestConverterRoundTrip() {
         for (var i : numbers) {
             var value = new Word32();
-            TestConverter.fromInt(i,value);
+            TestConverter.fromInt(i, value);
             Assertions.assertEquals(i, TestConverter.toInt(value));
         }
     }

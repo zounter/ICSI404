@@ -1,6 +1,5 @@
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class Word32Test {
 
@@ -38,13 +37,13 @@ class Word32Test {
     @Test
     void getBitN() {
         var w = getStripe();
-        for (int i=0;i<32;i++) {
+        for (int i = 0; i < 32; i++) {
             Bit result = new Bit(true);
-            w.getBitN(i,result);
-            if (i%2==1)
-                assertEquals(result.getValue(),f.getValue());
+            w.getBitN(i, result);
+            if (i % 2 == 1)
+                Assertions.assertEquals(result.getValue(), f.getValue());
             else
-                assertEquals(result.getValue(),t.getValue());
+                Assertions.assertEquals(result.getValue(), t.getValue());
         }
     }
 
@@ -54,14 +53,14 @@ class Word32Test {
         Word32 tw = getAllTrue();
         Word32 sw = getStripe();
         Word32 result = new Word32();
-        fw.and(fw,result);
-        assertTrue(fw.equals(result));
-        tw.and(tw,result);
-        assertTrue(tw.equals(result));
-        sw.and(tw,result);
-        assertTrue(sw.equals(result));
-        sw.and(sw,result);
-        assertTrue(sw.equals(result));
+        fw.and(fw, result);
+        Assertions.assertTrue(fw.equals(result));
+        tw.and(tw, result);
+        Assertions.assertTrue(tw.equals(result));
+        sw.and(tw, result);
+        Assertions.assertTrue(sw.equals(result));
+        sw.and(sw, result);
+        Assertions.assertTrue(sw.equals(result));
     }
 
     @Test
@@ -70,16 +69,16 @@ class Word32Test {
         Word32 tw = getAllTrue();
         Word32 sw = getStripe();
         Word32 result = new Word32();
-        fw.or(fw,result);
-        assertTrue(fw.equals(result));
-        tw.or(tw,result);
-        assertTrue(tw.equals(result));
-        sw.or(tw,result);
-        assertTrue(tw.equals(result));
-        sw.or(sw,result);
-        assertTrue(sw.equals(result));
-        sw.or(fw,result);
-        assertTrue(sw.equals(result));
+        fw.or(fw, result);
+        Assertions.assertTrue(fw.equals(result));
+        tw.or(tw, result);
+        Assertions.assertTrue(tw.equals(result));
+        sw.or(tw, result);
+        Assertions.assertTrue(tw.equals(result));
+        sw.or(sw, result);
+        Assertions.assertTrue(sw.equals(result));
+        sw.or(fw, result);
+        Assertions.assertTrue(sw.equals(result));
     }
 
     @Test
@@ -89,20 +88,20 @@ class Word32Test {
         Word32 sw = getStripe();
         Word32 sw2 = getStripe2();
         Word32 result = new Word32();
-        fw.xor(fw,result);
-        assertTrue(fw.equals(result));
+        fw.xor(fw, result);
+        Assertions.assertTrue(fw.equals(result));
 
-        tw.xor(tw,result);
-        assertTrue(fw.equals(result));
+        tw.xor(tw, result);
+        Assertions.assertTrue(fw.equals(result));
 
-        sw.xor(tw,result);
-        assertTrue(sw2.equals(result));
+        sw.xor(tw, result);
+        Assertions.assertTrue(sw2.equals(result));
 
-        sw.xor(sw,result);
-        assertTrue(fw.equals(result));
+        sw.xor(sw, result);
+        Assertions.assertTrue(fw.equals(result));
 
-        sw.xor(fw,result);
-        assertTrue(sw.equals(result));
+        sw.xor(fw, result);
+        Assertions.assertTrue(sw.equals(result));
     }
 
     @Test
@@ -113,47 +112,47 @@ class Word32Test {
         Word32 sw2 = getStripe2();
         Word32 result = new Word32();
         fw.not(result);
-        assertTrue(tw.equals(result));
+        Assertions.assertTrue(tw.equals(result));
         tw.not(result);
-        assertTrue(fw.equals(result));
+        Assertions.assertTrue(fw.equals(result));
         sw.not(result);
-        assertTrue(sw2.equals(result));
+        Assertions.assertTrue(sw2.equals(result));
         sw2.not(result);
-        assertTrue(sw.equals(result));
+        Assertions.assertTrue(sw.equals(result));
     }
 
     @Test
     void getTopHalf() {
         Word32 top = new Word32(new Bit[]{
-                f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f,
-                t,t,t,t, t,t,t,t, t,t,t,t, t,t,t,t,
+                f, f, f, f, f, f, f, f, f, f, f, f, f, f, f, f,
+                t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t,
         });
         Word32 opposite = new Word32(new Bit[]{
-                        t,t,t,t, t,t,t,t, t,t,t,t, t,t,t,t,
-                        f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f,
-                });
+                t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t,
+                f, f, f, f, f, f, f, f, f, f, f, f, f, f, f, f,
+        });
         Word16 result = new Word16();
         top.getTopHalf(result);
-        assertTrue(result.equals(new Word16( new Bit[]{ f, f, f, f, f, f, f, f, f, f, f, f, f, f, f, f, } )));
+        Assertions.assertTrue(result.equals(new Word16(new Bit[]{f, f, f, f, f, f, f, f, f, f, f, f, f, f, f, f,})));
         opposite.getTopHalf(result);
-        assertTrue(result.equals(new Word16( new Bit[]{ t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, } )));
+        Assertions.assertTrue(result.equals(new Word16(new Bit[]{t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t,})));
     }
 
     @Test
     void getBottomHalf() {
         Word32 top = new Word32(new Bit[]{
-                t,t,t,t, t,t,t,t, t,t,t,t, t,t,t,t,
-                f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f,
+                t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t,
+                f, f, f, f, f, f, f, f, f, f, f, f, f, f, f, f,
         });
         Word32 opposite = new Word32(new Bit[]{
-                f,f,f,f, f,f,f,f, f,f,f,f, f,f,f,f,
-                t,t,t,t, t,t,t,t, t,t,t,t, t,t,t,t,
+                f, f, f, f, f, f, f, f, f, f, f, f, f, f, f, f,
+                t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t,
         });
         Word16 result = new Word16();
         top.getBottomHalf(result);
-        assertTrue(result.equals(new Word16( new Bit[]{ f, f, f, f, f, f, f, f, f, f, f, f, f, f, f, f, } )));
+        Assertions.assertTrue(result.equals(new Word16(new Bit[]{f, f, f, f, f, f, f, f, f, f, f, f, f, f, f, f,})));
         opposite.getBottomHalf(result);
-        assertTrue(result.equals(new Word16( new Bit[]{ t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, } )));
+        Assertions.assertTrue(result.equals(new Word16(new Bit[]{t, t, t, t, t, t, t, t, t, t, t, t, t, t, t, t,})));
     }
 
     @Test
@@ -164,7 +163,7 @@ class Word32Test {
         var copyStripe2 = new Word32();
         stripe.copy(copyStripe);
         stripe2.copy(copyStripe2);
-        assertTrue(copyStripe.equals(getStripe()));
-        assertTrue(copyStripe2.equals(getStripe2()));
+        Assertions.assertTrue(copyStripe.equals(getStripe()));
+        Assertions.assertTrue(copyStripe2.equals(getStripe2()));
     }
 }

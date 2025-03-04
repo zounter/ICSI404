@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class Word16 {
     public Word16()
     {

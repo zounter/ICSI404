@@ -1,16 +1,15 @@
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 public class ProcessorTest {
-@Test
+    @Test
     public void testAdd() {
         String[] program = {
                 "add 10 r0",
                 "syscall 0"
-        } ;
-    var p = runProgram(program);
-    assertEquals("r0:f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,t,f,t,f,",p.output.getFirst());
+        };
+        var p = runProgram(program);
+        Assertions.assertEquals("r0:f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,t,f,t,f,", p.output.getFirst());
     }
 
     @Test
@@ -36,9 +35,10 @@ public class ProcessorTest {
                 "halt" // done
         };
         var p = runProgram(program);
-        assertEquals("35:f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,t,t,f,f,f,t,f,",p.output.get(35));
-        assertEquals("36:f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,t,t,t,t,f,t,t,f,t,t,",p.output.get(36));
+        Assertions.assertEquals("35:f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,t,t,f,f,f,t,f,", p.output.get(35));
+        Assertions.assertEquals("36:f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,t,t,t,t,f,t,t,f,t,t,", p.output.get(36));
     }
+
     @Test
     public void testPower() {
         String[] program = {
@@ -59,10 +59,10 @@ public class ProcessorTest {
                 "compare 1 r1",// address 7
                 "bne -1", // -- loop back to address 6
                 "return", // address 8
-        } ;
+        };
         var p = runProgram(program);
-        assertEquals("r2:f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,t,f,f,",p.output.get(2));
-        assertEquals("r2:f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,t,f,t,f,t,f,t,t,t,",p.output.get(34));
+        Assertions.assertEquals("r2:f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,t,f,f,", p.output.get(2));
+        Assertions.assertEquals("r2:f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,t,f,t,f,t,f,t,t,t,", p.output.get(34));
     }
 
     private static Processor runProgram(String[] program) {

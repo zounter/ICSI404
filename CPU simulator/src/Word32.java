@@ -8,7 +8,7 @@ public class Word32 {
         }
     }
 
-    private Bit [] BitArray32 = new Bit[32];
+    private Bit[] BitArray32 = new Bit[32];
 
     public Word32(Bit[] in)
     {
@@ -39,7 +39,7 @@ public class Word32 {
         int counter = 0;
         for (Bit currentBit : this.BitArray32)
         {
-            result.BitArray32[counter] = currentBit;
+            result.BitArray32[counter].assign(currentBit.getValue());
             counter++;
         }
     }
@@ -132,6 +132,26 @@ public class Word32 {
             sb.append(",");
         }
         return sb.toString();
+    }
+
+    public void fromString(String word)
+    {
+        //takes a stream of data and converts it to a word32
+        //will only convert the first 32 chars into word32 all other chars are not added
+        word.replace(",","");
+        int counter = 0;
+        for (char sbit : word.toCharArray())
+        {
+            if (sbit == 't' && counter < 32)
+            {
+                this.BitArray32[counter].assign(Bit.boolValues.TRUE);
+            }
+            else if (counter < 32)
+            {
+                this.BitArray32[counter].assign(Bit.boolValues.FALSE);
+            }
+            counter++;
+        }
     }
 
 }

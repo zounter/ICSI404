@@ -1,6 +1,5 @@
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class MemoryTest {
 
@@ -9,7 +8,7 @@ class MemoryTest {
         var m = new Memory();
         for (int i = 0; i < 1000; i++) {
             TestConverter.fromInt(i, m.address);
-            assertEquals(i, m.addressAsInt());
+            Assertions.assertEquals(i, m.addressAsInt());
         }
     }
 
@@ -18,13 +17,13 @@ class MemoryTest {
         var m = new Memory();
         for (int i = 0; i < 1000; i++) {
             TestConverter.fromInt(i, m.address);
-            TestConverter.fromInt(i+4000, m.value);
+            TestConverter.fromInt(i + 4000, m.value);
             m.write();
         }
         for (int i = 0; i < 1000; i++) {
             TestConverter.fromInt(i, m.address);
             m.read();
-            assertEquals(i+4000, TestConverter.toInt(m.value));
+            Assertions.assertEquals(i + 4000, TestConverter.toInt(m.value));
         }
     }
 
@@ -33,15 +32,15 @@ class MemoryTest {
         var data = new String[1000];
         var result = new Word32();
         for (int i = 0; i < 1000; i++) {
-            TestConverter.fromInt(8000+i,result);
-            data[i]=result.toString().replace(",","");
+            TestConverter.fromInt(8000 + i, result);
+            data[i] = result.toString().replace(",", "");
         }
         var m = new Memory();
         m.load(data);
         for (int i = 0; i < 1000; i++) {
             TestConverter.fromInt(i, m.address);
             m.read();
-            assertEquals(i+8000, TestConverter.toInt(m.value));
+            Assertions.assertEquals(i + 8000, TestConverter.toInt(m.value));
         }
     }
 }

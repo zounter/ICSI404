@@ -21,7 +21,14 @@ public class Bit {
 
     public void assign(boolValues value)
     {
-        this.BitValue = value;
+        if(value == boolValues.TRUE)
+        {
+            this.BitValue = boolValues.TRUE;
+        }
+        else
+        {
+            this.BitValue = boolValues.FALSE;
+        }
     }
 
     public void and(Bit b2, Bit result)

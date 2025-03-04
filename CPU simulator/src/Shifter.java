@@ -1,3 +1,5 @@
+//remove this import when adding this class to your code
+
 public class Shifter {
     public static void LeftShift(Word32 source, int amount, Word32 result)
     {
