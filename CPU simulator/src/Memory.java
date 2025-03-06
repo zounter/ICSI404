@@ -25,12 +25,10 @@ public class Memory {
     public void write()
     {
         this.value.copy(this.dram[this.addressAsInt()]);
-
     }
 
     public void load(String[] data)
     {
-
         for (int i = 0; i < this.dram.length && i < data.length; i++)
         {
             this.dram[i].fromString(data[i]);

@@ -60,7 +60,7 @@ public class ALU {
         }
         if (temp.getValue() == Bit.boolValues.FALSE)
         {
-            Shifter.LeftShift(op1,TestConverter.toInt(op2),result);
+            Shifter.LeftShift(op1,op2,result);
         }
     }
 
@@ -69,7 +69,7 @@ public class ALU {
         instruction.getBitN(4, temp);
         if (temp.getValue() == Bit.boolValues.TRUE)
         {
-            Shifter.RightShift(op1, TestConverter.toInt(op2), result);
+            Shifter.RightShift(op1,op2,result);
         }
         if (temp.getValue() == Bit.boolValues.FALSE)
         {
