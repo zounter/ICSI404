@@ -30,7 +30,8 @@ public class ALU {
         if (temp.getValue() == Bit.boolValues.TRUE)
         {
             ThirdBitTrue();
-            return;
+
+        return;
         }
         instruction.getBitN(3, temp);
         if (temp.getValue() == Bit.boolValues.TRUE)
