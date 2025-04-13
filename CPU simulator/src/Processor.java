@@ -8,7 +8,6 @@ public class Processor {
     private Word32[] registers = new Word32[32];
     private Word32 PC = new Word32();
     private Word16 instruction = new Word16();
-    private Word32 memStart = new Word32();
     private boolean halted = false;
     private int reg1;
     private int reg2;
@@ -30,34 +29,8 @@ public class Processor {
         //find the end of the program
 
         Word32 one = new Word32();
-        Word16 temp = new Word16();
-        one.setBitN(30, new Bit(true));
+        one.setBitN(31, new Bit(true));
         Word32 end = new Word32();
-        end.setBitN(20, new Bit(true));
-        end.setBitN(21, new Bit(true));
-        end.setBitN(22, new Bit(true));
-        end.setBitN(23, new Bit(true));
-        end.setBitN(24, new Bit(true));
-        end.setBitN(26, new Bit(true));
-        boolean lastInstructionHalt = false;
-        while (!Word32.equals(PC, end))
-        {
-            PC.copy(mem.address);
-            mem.read();
-            if (lastInstructionHalt && mem.value.equals(new Word32()))
-            {
-                memStart.copy(mem.address);
-                break;
-            }
-            mem.value.getBottomHalf(temp);
-            if (temp.equals(new Word16()))
-            {
-                lastInstructionHalt = true;
-            }
-            Adder.add(PC, one, PC);
-        }
-        new Word32().copy(PC);
-        new Word32().copy(end);
         end.setBitN(21, new Bit(true));
         end.setBitN(22, new Bit(true));
         end.setBitN(23, new Bit(true));
