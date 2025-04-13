@@ -1,4 +1,3 @@
-//remove these imports from your code when you add this class to your code
 
 public class Memory {
     public Word32 address= new Word32();

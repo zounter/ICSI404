@@ -15,24 +15,24 @@ public class ProcessorTest {
     @Test
     public void testFibonacci() {
         String[] program = {
-                "copy 10 r9", // address  -- 0
-                "leftshift 1 r9", // r9 = 20
-                "copy 15 r0", // limit for fib -- 1
-                "store 0 r9",  // first fib
-                "add 1 r9", // move to 2nd -- 2
-                "store 1 r9",  // second fib
-                "add 1 r9", // move to next spot in ram -- 3
-                "copy r9 r2", // temporary
-                "copy r9 r3", // temporary2 -- 4
-                "load -1 r2", // load f(n-1) into r2
-                "load -2 r3", // load f(n-2) into r3-- 5
-                "add r2 r3", // create next fib
-                "store r3 r9", // store fib -- 6
-                "subtract 1 r0", // decrement counter
-                "compare 0 r0", // compare counter to 0 -- 7
-                "bne -4", // loop back to 3
-                "syscall 1", // print out memory -- 8
-                "halt" // done
+                "copy 10 r9", // address  -- 0 0
+                "leftshift 1 r9", // r9 = 20 1
+                "copy 15 r0", // limit for fib -- 1 2
+                "store 0 r9",  // first fib 3
+                "add 1 r9", // move to 2nd -- 2 4
+                "store 1 r9",  // second fib 5
+                "add 1 r9", // move to next spot in ram -- 3 6
+                "copy r9 r2", // temporary 7
+                "copy r9 r3", // temporary2 -- 4 8
+                "load -1 r2", // load f(n-1) into r2 9
+                "load -2 r3", // load f(n-2) into r3-- 5 10
+                "add r2 r3", // create next fib 11
+                "store r3 r9", // store fib -- 6 12
+                "subtract 1 r0", // decrement counter 13
+                "compare 0 r0", // compare counter to 0 -- 7 14
+                "bne -4", // loop back to 3 15
+                "syscall 1", // print out memory -- 8 16
+                "halt" // done 17
         };
         var p = runProgram(program);
         Assertions.assertEquals("35:f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,t,f,f,t,t,f,f,f,t,f,", p.output.get(35));

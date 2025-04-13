@@ -3,6 +3,7 @@
 public class Multiplier {
     public static void multiply(Word32 a, Word32 b, Word32 result) {
         Word32 shifted = new Word32();
+
         Bit checkAdd = new Bit();
         for (int counter = 31; counter > -1; counter--)
         {

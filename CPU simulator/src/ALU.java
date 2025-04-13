@@ -8,106 +8,85 @@ public class ALU {
     public Word32 result = new Word32();
     public Bit less = new Bit(false);
     public Bit equal = new Bit(false);
-    private final Bit temp = new Bit();
-
     public void doInstruction()
     {
         result = new Word32();
+        switch (instruction.toString().replaceAll(",","").substring(0,5))
+        {
+            case "fffff" -> {}
+            case "fffft" -> {Adder.add(op1, op2, result);}
+            case "ffftf" -> {Word32.and(op1,op2,result);}
+            case "ffftt" -> {Multiplier.multiply(op1,op2,result);}
+            case "fftff" -> {Shifter.LeftShift(op1,op2,result);}
+            case "fftft" -> {Adder.subtract(op1,op2,result);}
+            case "ffttf" -> {Word32.or(op1,op2,result);}
+            case "ffttt" -> {Shifter.RightShift(op1,op2,result);}
+            case "fttff" -> {
+                if (less.getValue().equals(Bit.boolValues.TRUE) || equal.getValue().equals(Bit.boolValues.TRUE))
+                op1.copy(result);
+                else {
+                    new Word32().copy(result);
+                    result.setBitN(30, new Bit(true));
+                }
+            }
+            case "fttft" -> {
+                if (less.getValue().equals(Bit.boolValues.TRUE))
+                    op1.copy(result);
+                else {
+                    new Word32().copy(result);
+                    result.setBitN(30, new Bit(true));
+                }
+            }
+            case "ftttf" -> {
+                if (less.getValue().equals(Bit.boolValues.FALSE) || equal.getValue().equals(Bit.boolValues.TRUE))
+                    op1.copy(result);
+                else {
+                    new Word32().copy(result);
+                    result.setBitN(30, new Bit(true));
+                }
+            }
+            case "ftttt" -> {
+                if (less.getValue().equals(Bit.boolValues.FALSE) && equal.getValue().equals(Bit.boolValues.FALSE))
+                    op1.copy(result);
+                else {
+                    new Word32().copy(result);
+                    result.setBitN(30, new Bit(true));
+                }
+            }
+            case "tffff" -> {
+                if (equal.getValue().equals(Bit.boolValues.TRUE))
+                    op1.copy(result);
+                else {
+                    new Word32().copy(result);
+                    result.setBitN(30, new Bit(true));
+                }
+            }
+            case "tffft" -> {
+                if (equal.getValue().equals(Bit.boolValues.FALSE))
+                    op1.copy(result);
+                else {
+                    new Word32().copy(result);
+                    result.setBitN(30, new Bit(true));
+                }
+            }
+            case "ftftt" -> {compare();}
+
+        }
+    }
+
+    private void compare()
+    {
         less.assign(Bit.boolValues.FALSE);
         equal.assign(Bit.boolValues.FALSE);
-        instruction.getBitN(0, temp);
-        if(temp.getValue() == Bit.boolValues.TRUE)
-        {
-            return;
-        }
-        instruction.getBitN(1, temp);
-        if (temp.getValue() == Bit.boolValues.TRUE)
-        {
-            opCompare();
-            return;
-        }
-        instruction.getBitN(2, temp);
-        if (temp.getValue() == Bit.boolValues.TRUE)
-        {
-            ThirdBitTrue();
-
-        return;
-        }
-        instruction.getBitN(3, temp);
-        if (temp.getValue() == Bit.boolValues.TRUE)
-        {
-            FourthBitTrue();
-            return;
-        }
-        instruction.getBitN(4, temp);
-        if (temp.getValue() == Bit.boolValues.TRUE)
-        {
-            Adder.add(op1,op2,result);
-        }
-    }
-
-    public void ThirdBitTrue()
-    {
-        instruction.getBitN(3, temp);
-        if (temp.getValue() == Bit.boolValues.TRUE)
-        {
-            ThirdFourthTrue();
-            return;
-        }
-        instruction.getBitN(4, temp);
-        if (temp.getValue() == Bit.boolValues.TRUE)
-        {
-            Adder.subtract(op1,op2,result);
-        }
-        if (temp.getValue() == Bit.boolValues.FALSE)
-        {
-            Shifter.LeftShift(op1,op2,result);
-        }
-    }
-
-    public void ThirdFourthTrue()
-    {
-        instruction.getBitN(4, temp);
-        if (temp.getValue() == Bit.boolValues.TRUE)
-        {
-            Shifter.RightShift(op1,op2,result);
-        }
-        if (temp.getValue() == Bit.boolValues.FALSE)
-        {
-            Word32.or(op1,op2,result);
-        }
-    }
-
-    public void FourthBitTrue()
-    {
-        instruction.getBitN(4, temp);
-        if (temp.getValue() == Bit.boolValues.TRUE)
-        {
-            Multiplier.multiply(op1,op2,result);
-        }
-        if (temp.getValue() == Bit.boolValues.FALSE)
-        {
-            Word32.and(op1,op2,result);
-        }
-    }
-
-    public void opCompare()
-    {
-        //checking if the rest of the word matches compare
-        instruction.getBitN(2, temp);
-        if(temp.getValue() == Bit.boolValues.TRUE) return;
-        instruction.getBitN(3, temp);
-        if(temp.getValue() == Bit.boolValues.FALSE) return;
-        instruction.getBitN(4, temp);
-        if(temp.getValue() == Bit.boolValues.FALSE) return;
-        Word32 subResult = new Word32();
-        if(Word32.equals(op1, op2))
+        Bit temp = new Bit();
+        Word32 tempWord = new Word32();
+        if (Word32.equals(op1,op2))
         {
             equal.assign(Bit.boolValues.TRUE);
         }
-        Adder.subtract(op1, op2, subResult);
-        subResult.getBitN(0, temp);
-        if(temp.getValue() == Bit.boolValues.TRUE)
+        Adder.subtract(op1,op2,tempWord);
+        tempWord.getBitN(0, temp);
+        if (temp.getValue() == Bit.boolValues.TRUE)
         {
             less.assign(Bit.boolValues.TRUE);
         }
