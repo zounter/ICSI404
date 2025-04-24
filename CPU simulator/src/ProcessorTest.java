@@ -39,6 +39,41 @@ public class ProcessorTest {
         Assertions.assertEquals("36:f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,t,t,t,t,f,t,t,f,t,t,", p.output.get(36));
     }
 
+    public void testLinkedList () {
+        String[] program = {
+                "copy 404 r5", // address 0
+                "copy 404 r5",
+                "copy r5 r3", //address 1
+                "store 0 r3",
+                "copy r3 r2", //address 2
+                "",
+                "", //address 3
+                "",
+                "", //address 4
+                "",
+                "", //address 5
+                "",
+                "", //address 6
+                "",
+                "", //address 7
+                "",
+                "", //address 8
+                "",
+                "", //address 9
+                "",
+                "", //address 10
+                "",
+                "", //address 11
+                "",
+                "", //address 12
+                "",
+                "", //address 13
+                "",
+        };
+        var p = runProgram(program);
+        Assertions.assertEquals("r4:f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,t,f,t,t,t,t,t,f", p.output.get(4));
+    }
+
     @Test
     public void testPower() {
         String[] program = {

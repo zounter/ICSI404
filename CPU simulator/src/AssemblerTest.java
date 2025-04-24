@@ -1,4 +1,3 @@
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,10 +41,10 @@ class AssemblerTest {
                 "subtract 10 r4"
         };
         var response = Assembler.assemble(myFirstProgram);
-        Assertions.assertEquals("fffftffffftffftf", response[0]);
-        Assertions.assertEquals("ftfffffffttfftff", response[1]);
-        Assertions.assertEquals("ftftffffffffffff", response[2]);
-        Assertions.assertEquals("fftfttftftffftff", response[3]);
+        assertEquals("fffftffffftffftf", response[0]);
+        assertEquals("ftfffffffttfftff", response[1]);
+        assertEquals("ftftffffffffffff", response[2]);
+        assertEquals("fftfttftftffftff", response[3]);
     }
 
     @Test
@@ -55,7 +54,7 @@ class AssemblerTest {
             prog[0] = instruction[0];
             assertEquals(16, instruction[1].length(), "Instruction " + instruction[0] + " correct answer is wrong length");
             var result = Assembler.assemble(prog);
-            Assertions.assertEquals(instruction[1], result[0], "Instruction " + instruction[0] + " failed");
+            assertEquals(instruction[1], result[0], "Instruction " + instruction[0] + " failed");
         }
     }
 }

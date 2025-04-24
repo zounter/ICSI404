@@ -1,5 +1,6 @@
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Stack;
 
 public class Processor {
@@ -14,6 +15,9 @@ public class Processor {
     private int container;
     Stack<Word32> instructionStack = new Stack<>();
     public List<String> output = new LinkedList<>();
+    private Boolean useL2;
+    private Boolean useInstructionCache;
+    private int clockCycle;
 
 
 
@@ -27,6 +31,9 @@ public class Processor {
 
     public void run() {
         //find the end of the program
+        Scanner input = new Scanner(System.in);
+        useInstructionCache = false;
+        useL2 = false;
 
         Word32 one = new Word32();
         one.setBitN(31, new Bit(true));
@@ -47,6 +54,7 @@ public class Processor {
             if (container != 3 && container != 1) Adder.add(PC, one, PC);
             else Adder.subtract(PC, one, PC);
         }
+        System.out.println("Cycles taken for computing: " + clockCycle);
     }
 
 
@@ -154,9 +162,10 @@ public class Processor {
                 container = 7;
                 break;
                 //basic ops
+            case "ffftt":
+                clockCycle += 8;
             case "fffft":
             case "ffftf":
-            case "ffftt":
             case "fftff":
             case "fftft":
             case "ffttf":
@@ -221,6 +230,7 @@ public class Processor {
                 container = 6;
                 break;
         }
+        clockCycle += 2;
 
     }
 
@@ -260,14 +270,38 @@ public class Processor {
                 if(temp.getValue().equals(Bit.boolValues.FALSE))
                 {
                     alu.op1.copy(mem.address);
-                    mem.read();
+                    if (useInstructionCache && useL2)
+                    {
+
+                    }
+                    else if (useInstructionCache)
+                    {
+
+                    }
+                    else
+                    {
+                        mem.read();
+                        clockCycle += 298;
+                    }
                     mem.value.copy(registers[reg2]);
                 }
                 else
                 {
                     Adder.add(alu.op1, alu.op2, result);
                     result.copy(mem.address);
-                    mem.read();
+                    if (useInstructionCache && useL2)
+                    {
+
+                    }
+                    else if (useInstructionCache)
+                    {
+
+                    }
+                    else
+                    {
+                        mem.read();
+                        clockCycle += 298;
+                    }
                     mem.value.copy(registers[reg2]);
                 }
                 break;
@@ -275,8 +309,17 @@ public class Processor {
             case 5:
                 alu.op2.copy(mem.address);
                 alu.op1.copy(mem.value);
-                mem.write();
-                    break;
+
+                if (useL2)
+                {
+
+                }
+                else
+                {
+                    mem.write();
+                    clockCycle += 298;
+                }
+                break;
             case 6:
                 //data to Register
                 alu.op1.copy(registers[reg2]);
