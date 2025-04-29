@@ -131,6 +131,7 @@ public class Word32 {
             sb.append(currentBit.toString());
             sb.append(",");
         }
+        //sb.append(" {" + TestConverter.toInt(this) + "}");
         return sb.toString();
     }
 

@@ -1,7 +1,4 @@
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
 
 public class Processor {
     private Memory mem;
@@ -15,9 +12,11 @@ public class Processor {
     private int container;
     Stack<Word32> instructionStack = new Stack<>();
     public List<String> output = new LinkedList<>();
-    private Boolean useL2;
-    private Boolean useInstructionCache;
+    public Boolean useL2 = false;
+    public Boolean useInstructionCache = false;
     private int clockCycle;
+    private L2 l2 = new L2();
+    private InstructionCache instructionCache = new InstructionCache();
 
 
 
@@ -31,9 +30,6 @@ public class Processor {
 
     public void run() {
         //find the end of the program
-        Scanner input = new Scanner(System.in);
-        useInstructionCache = false;
-        useL2 = false;
 
         Word32 one = new Word32();
         one.setBitN(31, new Bit(true));
@@ -54,6 +50,11 @@ public class Processor {
             if (container != 3 && container != 1) Adder.add(PC, one, PC);
             else Adder.subtract(PC, one, PC);
         }
+        if (useL2)
+        {
+            l2.storeAll(mem);
+        }
+
         System.out.println("Cycles taken for computing: " + clockCycle);
     }
 
@@ -71,17 +72,47 @@ public class Processor {
         //check if even/odd
         if (checkEven.getValue().equals(Bit.boolValues.TRUE))
         {
-            //take right instuction if odd
-            CurrentDram.copy(mem.address);
-            mem.read();
-            mem.value.getBottomHalf(instruction);
+            //take right instruction if odd
+            if (useL2)
+            {
+                Word32 temp = new Word32();
+                clockCycle += instructionCache.read(CurrentDram, temp, Optional.of(l2), mem);
+                temp.getBottomHalf(instruction);
+            }
+            else if (useInstructionCache)
+            {
+                Word32 temp = new Word32();
+                clockCycle += instructionCache.read(CurrentDram, temp, Optional.empty(), mem);
+                temp.getBottomHalf(instruction);
+            }
+            else {
+                CurrentDram.copy(mem.address);
+                mem.read();
+                mem.value.getBottomHalf(instruction);
+                clockCycle += 300;
+            }
         }
         else
         {
             //take left if even
-            CurrentDram.copy(mem.address);
-            mem.read();
-            mem.value.getTopHalf(instruction);
+            if (useL2)
+            {
+                Word32 temp = new Word32();
+                clockCycle += instructionCache.read(CurrentDram, temp, Optional.of(l2), mem);
+                temp.getTopHalf(instruction);
+            }
+            else if (useInstructionCache)
+            {
+                Word32 temp = new Word32();
+                clockCycle += instructionCache.read(CurrentDram, temp, Optional.empty(), mem);
+                temp.getTopHalf(instruction);
+            }
+            else {
+                CurrentDram.copy(mem.address);
+                mem.read();
+                mem.value.getTopHalf(instruction);
+                clockCycle += 300;
+            }
         }
     }
 
@@ -92,7 +123,7 @@ public class Processor {
             instruction.getBitN(i, temp);
             alu.instruction.setBitN(i, temp);
         }
-        //its a call return
+        //it's a call return
         if(isCallReturn(alu.instruction))
         {
             instruction.getBitN(5, temp);
@@ -106,11 +137,11 @@ public class Processor {
                 alu.op1.setBitN(i + 16, temp);
             }
         }
-        //its a 2R or Immediate
+        //it's a 2R or Immediate
         else
         {
             instruction.getBitN(5, temp);
-            //its not a register
+            //it's not a register
             if (temp.getValue() == Bit.boolValues.TRUE) {
                 instruction.getBitN(6, temp);
                 if (temp.getValue().equals(Bit.boolValues.TRUE)) {
@@ -129,7 +160,7 @@ public class Processor {
                 reg2 = getReg(alu.op2);
                 registers[reg2].copy(alu.op2);
             }
-            //its a register
+            //it's a register
             else {
                 for (int i = 6; i < 11; i++) {
                     instruction.getBitN(i, temp);
@@ -185,6 +216,7 @@ public class Processor {
                 }
                 else
                 {
+                    l2.storeAll(mem);
                     printMem();
                 }
                 container = 7;
@@ -208,7 +240,7 @@ public class Processor {
                 container = 7;
                 break;
                 //branches
-                //return either double their ammount or https://youtu.be/OKTXq2VQ09s?t=32
+                //return either double their amount or nothing
             case "fttff":
             case "fttft":
             case "ftttf":
@@ -270,55 +302,47 @@ public class Processor {
                 if(temp.getValue().equals(Bit.boolValues.FALSE))
                 {
                     alu.op1.copy(mem.address);
-                    if (useInstructionCache && useL2)
+                    if (useL2)
                     {
-
-                    }
-                    else if (useInstructionCache)
-                    {
-
+                        clockCycle -= 2;
+                        clockCycle += l2.read(alu.op1, registers[reg2], mem);
                     }
                     else
                     {
                         mem.read();
+                        mem.value.copy(registers[reg2]);
                         clockCycle += 298;
                     }
-                    mem.value.copy(registers[reg2]);
                 }
                 else
                 {
                     Adder.add(alu.op1, alu.op2, result);
                     result.copy(mem.address);
-                    if (useInstructionCache && useL2)
-                    {
-
-                    }
-                    else if (useInstructionCache)
-                    {
-
+                    if (useL2) {
+                        clockCycle -= 2;
+                        clockCycle += l2.read(result, registers[reg2], mem);
                     }
                     else
                     {
                         mem.read();
+                        mem.value.copy(registers[reg2]);
                         clockCycle += 298;
                     }
-                    mem.value.copy(registers[reg2]);
                 }
                 break;
                 //Value to Memory
             case 5:
                 alu.op2.copy(mem.address);
                 alu.op1.copy(mem.value);
-
-                if (useL2)
-                {
-
-                }
-                else
-                {
-                    mem.write();
-                    clockCycle += 298;
-                }
+                    if (useL2)
+                    {
+                        clockCycle += l2.write(alu.op2, alu.op1, mem) - 2;
+                    }
+                    else
+                    {
+                        mem.write();
+                        clockCycle += 298;
+                    }
                 break;
             case 6:
                 //data to Register
@@ -334,7 +358,7 @@ public class Processor {
         for (int i = 0; i < 32; i++) {
             var line = "r"+ i + ":" + registers[i].toString();
             output.add(line);
-            System.out.println(line);
+            //System.out.println(line);
         }
     }
 
@@ -349,7 +373,7 @@ public class Processor {
             mem.value.copy(value);
             var line = i + ":" + value;
             output.add(line);
-            System.out.println(line);
+            //System.out.println(line);
         }
     }
 
@@ -382,5 +406,4 @@ public class Processor {
         }
         return reg;
     }
-
 }
